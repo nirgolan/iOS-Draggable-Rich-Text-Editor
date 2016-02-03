@@ -457,7 +457,7 @@
 	}
 	
     // I think he wanted TextAttachment here, not BulletList
-	if ((features & RichTextEditorTextAttachment || features & RichTextEditorFeatureAll) && SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0"))
+	if ((features & RichTextEditorTextAttachment) && SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0"))
 	{
 		[self addView:self.btnTextAttachment afterView:lastAddedView withSpacing:YES];
 		lastAddedView = self.btnTextAttachment;

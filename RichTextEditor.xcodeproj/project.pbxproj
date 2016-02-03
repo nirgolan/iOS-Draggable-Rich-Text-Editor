@@ -52,6 +52,7 @@
 		158389471735A5D7006DE713 /* RichTextEditorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 158389461735A5D7006DE713 /* RichTextEditorTests.m */; };
 		1583895A1735D7F4006DE713 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 158389591735D7F4006DE713 /* CoreText.framework */; };
 		15B6E20F17A4C2820015867C /* RichTextEditorToggleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B6E20E17A4C2820015867C /* RichTextEditorToggleButton.m */; };
+		ABA8B6461C5F826D004E6729 /* DraggableRichTextEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = ABA8B6451C5F826D004E6729 /* DraggableRichTextEditor.m */; };
 		D28387061A7EE06F0093AF3E /* PSPDFTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = D28387051A7EE06F0093AF3E /* PSPDFTextView.m */; };
 		D28387081A7EE1340093AF3E /* OtherLicenses.txt in Resources */ = {isa = PBXBuildFile; fileRef = D28387071A7EE1340093AF3E /* OtherLicenses.txt */; };
 		D2ECA73C1A321FE900C57F03 /* backcolor.png in Resources */ = {isa = PBXBuildFile; fileRef = D2ECA7001A321FE900C57F03 /* backcolor.png */; };
@@ -184,7 +185,7 @@
 		1583892E1735A5D7006DE713 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
 		158389301735A5D7006DE713 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		158389311735A5D7006DE713 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		158389381735A5D7006DE713 /* RichTextEditorTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = RichTextEditorTests.octest; path = RichTextEditorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		158389381735A5D7006DE713 /* RichTextEditorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RichTextEditorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		158389411735A5D7006DE713 /* RichTextEditorTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "RichTextEditorTests-Info.plist"; sourceTree = "<group>"; };
 		158389431735A5D7006DE713 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		158389451735A5D7006DE713 /* RichTextEditorTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RichTextEditorTests.h; sourceTree = "<group>"; };
@@ -192,6 +193,8 @@
 		158389591735D7F4006DE713 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		15B6E20D17A4C2820015867C /* RichTextEditorToggleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RichTextEditorToggleButton.h; sourceTree = "<group>"; };
 		15B6E20E17A4C2820015867C /* RichTextEditorToggleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RichTextEditorToggleButton.m; sourceTree = "<group>"; };
+		ABA8B6441C5F826D004E6729 /* DraggableRichTextEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraggableRichTextEditor.h; sourceTree = "<group>"; };
+		ABA8B6451C5F826D004E6729 /* DraggableRichTextEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraggableRichTextEditor.m; sourceTree = "<group>"; };
 		D28387041A7EE06F0093AF3E /* PSPDFTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSPDFTextView.h; sourceTree = "<group>"; };
 		D28387051A7EE06F0093AF3E /* PSPDFTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSPDFTextView.m; sourceTree = "<group>"; };
 		D28387071A7EE1340093AF3E /* OtherLicenses.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OtherLicenses.txt; sourceTree = "<group>"; };
@@ -285,10 +288,11 @@
 			children = (
 				153F9555179F9953005B2487 /* Assets */,
 				153F955A179F9953005B2487 /* Categories */,
-				153F9561179F9953005B2487 /* iphone Popover */,
 				D2ECA6FA1A32156D00C57F03 /* PSPDFTextView */,
 				153F957B179F9953005B2487 /* RichTextEditor.h */,
 				153F957C179F9953005B2487 /* RichTextEditor.m */,
+				ABA8B6441C5F826D004E6729 /* DraggableRichTextEditor.h */,
+				ABA8B6451C5F826D004E6729 /* DraggableRichTextEditor.m */,
 				153F9584179F9953005B2487 /* RichTextEditorToolbar.h */,
 				153F9585179F9953005B2487 /* RichTextEditorToolbar.m */,
 				15B6E20D17A4C2820015867C /* RichTextEditorToggleButton.h */,
@@ -428,7 +432,7 @@
 			isa = PBXGroup;
 			children = (
 				1583890E1735A5D7006DE713 /* RichTextEditor.app */,
-				158389381735A5D7006DE713 /* RichTextEditorTests.octest */,
+				158389381735A5D7006DE713 /* RichTextEditorTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -454,6 +458,7 @@
 				1583892D1735A5D7006DE713 /* MainStoryboard_iPad.storyboard */,
 				158389301735A5D7006DE713 /* ViewController.h */,
 				158389311735A5D7006DE713 /* ViewController.m */,
+				153F9561179F9953005B2487 /* iphone Popover */,
 				158389191735A5D7006DE713 /* Supporting Files */,
 			);
 			path = RichTextEditor;
@@ -554,7 +559,7 @@
 			);
 			name = RichTextEditorTests;
 			productName = RichTextEditorTests;
-			productReference = 158389381735A5D7006DE713 /* RichTextEditorTests.octest */;
+			productReference = 158389381735A5D7006DE713 /* RichTextEditorTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -718,6 +723,7 @@
 				153F958C179F9953005B2487 /* UIView+RichTextEditor.m in Sources */,
 				153F959F179F9953005B2487 /* WETouchableView.m in Sources */,
 				158389231735A5D7006DE713 /* AppDelegate.m in Sources */,
+				ABA8B6461C5F826D004E6729 /* DraggableRichTextEditor.m in Sources */,
 				158389321735A5D7006DE713 /* ViewController.m in Sources */,
 				153F95A1179F9953005B2487 /* RichTextEditorColorPickerViewController.m in Sources */,
 				153F958A179F9953005B2487 /* NSAttributedString+RichTextEditor.m in Sources */,
