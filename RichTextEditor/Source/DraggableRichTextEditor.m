@@ -62,7 +62,7 @@ PinchAxis pinchGestureRecognizerAxis(UIPinchGestureRecognizer *r) {
 #define VELOCITY_FOR_DELETE 150.0
 #define kPointInsideCache 8
 #define kSizeForAlpha 50.0
-#define kDefaultFontSize 24.0
+#define kDefaultFontSize 36.0
 #define kMinimumFontSize 14.0
 
 @implementation DraggableRichTextEditor
@@ -115,13 +115,13 @@ PinchAxis pinchGestureRecognizerAxis(UIPinchGestureRecognizer *r) {
     
     _doubleTapRecognizer.delegate = _tapRecognizer.delegate =  _rotateRecognizer.delegate = _panRecognizer.delegate = _pinchRecognizer.delegate = self;
     
-    [self.tapRecognizer requireGestureRecognizerToFail:self.doubleTapRecognizer];
+//    [self.tapRecognizer requireGestureRecognizerToFail:self.doubleTapRecognizer];
     
     [self addGestureRecognizer:_panRecognizer];
     [self addGestureRecognizer:_rotateRecognizer];
     [self addGestureRecognizer:_pinchRecognizer];
-//    [self addGestureRecognizer:_tapRecognizer];
-    [self addGestureRecognizer:_doubleTapRecognizer];
+    [self addGestureRecognizer:_tapRecognizer];
+//    [self addGestureRecognizer:_doubleTapRecognizer];
     
 }
 
@@ -140,12 +140,52 @@ PinchAxis pinchGestureRecognizerAxis(UIPinchGestureRecognizer *r) {
     
     CGFloat maxWidth = self.superview.bounds.size.width * 0.9;
 
-    CGRect newRect = CGRectMake(0, 0, MIN(maxWidth, self.bounds.size.width) , self.contentSize.height);
+    CGFloat suggestedWidth = MIN(maxWidth, self.bounds.size.width);
+    CGFloat suggestedHeight = self.contentSize.height;
+    
+    CGRect newRect = CGRectMake(0, 0, suggestedWidth , suggestedHeight);
+    
+    if ([self isRotatedOneRadian]) {
+        newRect = CGRectMake(0, 0, suggestedHeight , suggestedWidth);
+    }
+
     self.bounds = newRect;
 
 }
 
+-(BOOL)isRotatedOneRadian
+{
+    // return YES if width is height and vice versa
+    // 45 deg - 135  , 225 - 315
+    CGFloat rotation = self.viewRotation;
+    CGFloat absRotation = fabs(180.0 - rotation);
+    if (absRotation >= 45.0 && absRotation <= 135.0) {
+        return YES;
+    }
+    
+    return NO;
+}
+
+-(void)setAttributedText:(NSAttributedString *)attributedText
+{
+    [super setAttributedText:attributedText];
+    
+    [self textViewDidChange:self];
+}
+
 #pragma mark - text view delegate
+-(BOOL)textViewShouldBeginEditing:(UITextView *)textView
+{
+    if (self.editInPlace) {
+        return YES;
+    } else {
+        [self.draggableDelegate draggableRichTextDidTap:self];
+    }
+    
+    
+    return NO;
+}
+
 -(void)textViewDidBeginEditing:(UITextView *)textView
 {
     self.isCurrentlyEditing = YES;
@@ -168,6 +208,37 @@ PinchAxis pinchGestureRecognizerAxis(UIPinchGestureRecognizer *r) {
     }
 }
 
+-(BOOL)textViewShouldEndEditing:(UITextView *)textView
+{
+    if ([self.draggableDelegate respondsToSelector:@selector(textViewShouldEndEditing:)]) {
+         return [self.draggableDelegate textViewShouldEndEditing:self];
+    }
+
+    return YES;
+}
+
+-(void)textViewDidChange:(UITextView *)textView
+{
+    // super is still the delegate
+    if ([[self superclass] instancesRespondToSelector:@selector(textViewDidChange:)]) {
+        [super textViewDidChange:textView];
+    }
+    
+    if ([self.draggableDelegate respondsToSelector:@selector(textViewDidChange:)]) {
+        [self.draggableDelegate textViewDidChange:self];
+    }
+
+}
+
+-(BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
+{
+    return NO;
+}
+
+-(BOOL)textView:(UITextView *)textView shouldInteractWithTextAttachment:(NSTextAttachment *)textAttachment inRange:(NSRange)characterRange
+{
+    return NO;
+}
 
 #pragma mark - increase font size
 
@@ -225,8 +296,7 @@ PinchAxis pinchGestureRecognizerAxis(UIPinchGestureRecognizer *r) {
     
     if (started) {
         
-        self.isDragging = YES;
-        /** handled by touchesBegan , it will notify the delegate **/
+        [self setAndNotifyDragging:YES];
         
     } else {
         // check that other gesture recognizers are ended as well
@@ -320,6 +390,9 @@ PinchAxis pinchGestureRecognizerAxis(UIPinchGestureRecognizer *r) {
     
     recognizer.rotation = 0;
     
+    [self updateBoundsForContentSize];
+
+    
     if (recognizer.state != UIGestureRecognizerStateChanged) {
 //        [self updateHighlight];
     }
@@ -346,28 +419,33 @@ PinchAxis pinchGestureRecognizerAxis(UIPinchGestureRecognizer *r) {
     CGFloat maxWidth = self.superview.bounds.size.width * 0.9;
     CGRect newRect = CGRectMake(0, 0, MIN(maxWidth, self.bounds.size.width * recognizer.scale), self.contentSize.height);
     
+    if ([self isRotatedOneRadian]) {
+        newRect = CGRectMake(0, 0, newRect.size.height, newRect.size.width);
+    }
+
+    
+    
     PinchAxis axis = pinchGestureRecognizerAxis(recognizer);
-    NSLog(@"pinchAxis %i , %f", axis, recognizer.scale);
+//    NSLog(@"pinchAxis %i , %f", axis, recognizer.scale);
     
     if (self.pinchAxis == PinchAxisNone) {
         self.pinchAxis = axis;
     }
     
     
-    
     BOOL tooBig = NO;
     /*(newRect.size.width >= [[UIScreen mainScreen] bounds].size.height * 1.2||
      newRect.size.height >= [UIScreen mainScreen].bounds.size.width * 1.2);*/
-    BOOL tooSmall = (MAX(newRect.size.width , newRect.size.height) <= RESPONSIVE_MIN_ImageView_WIDTH);
+    BOOL tooSmall = (newRect.size.width <= RESPONSIVE_MIN_ImageView_WIDTH);
     
     BOOL shouldResize = !(recognizer.scale > 1 && tooBig) // not too big
-    && !(recognizer.scale < 1 && tooSmall) ;
+    && !(tooSmall) ;
     
     if (shouldResize) {
         
         if (self.pinchAxis == PinchAxisHorizontal) {
             
-            if (fabs(1.0 - recognizer.scale) > 0.02) {
+            if (fabs(1.0 - recognizer.scale) > 0.02 && !tooSmall) {
                 recognizer.view.bounds = newRect;
                 
                 self.viewScaling = self.viewScaling * recognizer.scale;
@@ -419,8 +497,8 @@ PinchAxis pinchGestureRecognizerAxis(UIPinchGestureRecognizer *r) {
     
     if (recognizer == self.tapRecognizer) {
         // single tap
-//        if ([_delegate respondsToSelector:@selector(responsiveImageViewSingleTapped:)])
-//            [_delegate responsiveImageViewSingleTapped:self];
+        if ([self.draggableDelegate respondsToSelector:@selector(draggableRichTextDidTap:)])
+            [self.draggableDelegate draggableRichTextDidTap:self];
     }
     
     if (recognizer == self.doubleTapRecognizer) {
@@ -463,17 +541,9 @@ PinchAxis pinchGestureRecognizerAxis(UIPinchGestureRecognizer *r) {
     if (dragging != self.isDragging) {
         
         self.isDragging = dragging;
+    
+        [self.draggableDelegate draggableRichTextDidStartDragging:self start:dragging];
         
-#warning fix
-        if (dragging) {
-//            if ([_delegate respondsToSelector:@selector(responsiveImageViewDidStartDragging:)]) {
-//                [_delegate responsiveImageViewDidStartDragging:self];
-//            }
-        } else {
-//            if ([_delegate respondsToSelector:@selector(responsiveImageViewDidEndDragging:)]) {
-//                [_delegate responsiveImageViewDidEndDragging:self];
-//            }
-        }
     }
 }
 
@@ -497,4 +567,20 @@ PinchAxis pinchGestureRecognizerAxis(UIPinchGestureRecognizer *r) {
 }
 
 
+
+- (void)paste:(id)sender {
+//    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+//    NSLog(@"types available: %@", [pasteboard pasteboardTypes]);
+//    for (NSString *type in [pasteboard pasteboardTypes]) {
+//        NSLog(@"type %@ (%@): %@", type, NSStringFromClass([[pasteboard valueForPasteboardType:type] class]), [pasteboard valueForPasteboardType:type]);
+//    }
+    
+    [super paste:sender];
+    
+    // strip URLs from the text after pasting
+    NSMutableAttributedString *attributedString = [self.attributedText mutableCopy];
+    [attributedString removeAttribute:NSLinkAttributeName range:NSMakeRange(0, attributedString.length)];
+    self.attributedText = attributedString;
+
+}
 @end

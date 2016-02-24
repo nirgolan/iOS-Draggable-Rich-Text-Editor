@@ -7,7 +7,17 @@
 //
 
 #import "RichTextEditor.h"
+@class DraggableRichTextEditor;
+
+@protocol DraggableRichTextDelegate <UITextViewDelegate>
+
+-(void)draggableRichTextDidTap:(DraggableRichTextEditor*)textLabel;
+-(void)draggableRichTextDidStartDragging:(DraggableRichTextEditor *)textLabel start:(BOOL)start;
+@end
 
 @interface DraggableRichTextEditor : RichTextEditor
 
+@property (nonatomic, weak) id<DraggableRichTextDelegate> draggableDelegate;
+@property BOOL wasEdited;
+@property BOOL editInPlace;
 @end
