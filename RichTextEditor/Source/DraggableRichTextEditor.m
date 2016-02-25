@@ -62,7 +62,7 @@ PinchAxis pinchGestureRecognizerAxis(UIPinchGestureRecognizer *r) {
 #define VELOCITY_FOR_DELETE 150.0
 #define kPointInsideCache 8
 #define kSizeForAlpha 50.0
-#define kDefaultFontSize 36.0
+#define kDefaultFontSize 42.0
 #define kMinimumFontSize 14.0
 
 @implementation DraggableRichTextEditor
@@ -417,7 +417,10 @@ PinchAxis pinchGestureRecognizerAxis(UIPinchGestureRecognizer *r) {
     CGAffineTransform newTransform = CGAffineTransformScale(recognizer.view.transform, recognizer.scale, 1.0);
     
     CGFloat maxWidth = self.superview.bounds.size.width * 0.9;
-    CGRect newRect = CGRectMake(0, 0, MIN(maxWidth, self.bounds.size.width * recognizer.scale), self.contentSize.height);
+    CGFloat updatedWidth = MIN(maxWidth, self.bounds.size.width * recognizer.scale);
+
+    BOOL reachedMaxWidth = (maxWidth == updatedWidth);
+    CGRect newRect = CGRectMake(0, 0, updatedWidth, self.contentSize.height);
     
     if ([self isRotatedOneRadian]) {
         newRect = CGRectMake(0, 0, newRect.size.height, newRect.size.width);
@@ -443,7 +446,7 @@ PinchAxis pinchGestureRecognizerAxis(UIPinchGestureRecognizer *r) {
     
     if (shouldResize) {
         
-        if (self.pinchAxis == PinchAxisHorizontal) {
+        if (self.pinchAxis == PinchAxisHorizontal && !reachedMaxWidth) {
             
             if (fabs(1.0 - recognizer.scale) > 0.02 && !tooSmall) {
                 recognizer.view.bounds = newRect;
@@ -458,7 +461,7 @@ PinchAxis pinchGestureRecognizerAxis(UIPinchGestureRecognizer *r) {
             if (fabs(1.0 - recognizer.scale) > 0.05) {
                 
                 // increase/decrease font size
-                [self increaseFontSizeBy:recognizer.scale > 1.0 ? 1.0 : -1.0];
+                [self increaseFontSizeBy:recognizer.scale > 1.0 ? 2.0 : -2.0];
                 
                 recognizer.scale = 1.0;
                 [self updateBoundsForContentSize];
@@ -470,10 +473,13 @@ PinchAxis pinchGestureRecognizerAxis(UIPinchGestureRecognizer *r) {
         }
         
     } else if (tooSmall) {
-        // perform flipping animation - provisional
         
-        // [self flipImage];
-        // return;
+        // increase/decrease font size
+        [self increaseFontSizeBy:recognizer.scale > 1.0 ? 1.0 : -1.0];
+        
+        recognizer.scale = 1.0;
+        [self updateBoundsForContentSize];
+        
     }
     
     if (recognizer.state == UIGestureRecognizerStateEnded ||
