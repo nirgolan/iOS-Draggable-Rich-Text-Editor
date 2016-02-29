@@ -83,6 +83,7 @@ typedef enum{
 - (void)richTextEditorToolbarDidSelectUndo;
 - (void)richTextEditorToolbarDidSelectRedo;
 - (void)richTextEditorToolbarDidSelectDismissKeyboard;
+- (void)richTextEditorToolbarDidSelectSelectAll;
 @end
 
 @protocol RichTextEditorToolbarDataSource <NSObject>

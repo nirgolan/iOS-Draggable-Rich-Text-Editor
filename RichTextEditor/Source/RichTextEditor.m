@@ -650,6 +650,11 @@
 	self.attributedText = attributedString;
 }
 
+- (void)richTextEditorToolbarDidSelectSelectAll
+{
+    self.selectedRange = NSMakeRange(0, self.attributedText.length);
+}
+
 - (UIViewController <RichTextEditorColorPicker> *)colorPickerForRichTextEditorToolbarWithAction:(RichTextEditorColorPickerAction)action
 {
 	if ([self.dataSource respondsToSelector:@selector(colorPickerForRichTextEditor:withAction:)]) { // changed "forAction" to "withAction"

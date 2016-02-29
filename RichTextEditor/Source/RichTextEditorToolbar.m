@@ -61,6 +61,8 @@
 @property (nonatomic, strong) RichTextEditorToggleButton *btnTextAttachment;
 @property (nonatomic, strong) RichTextEditorToggleButton *btnTextUndo;
 @property (nonatomic, strong) RichTextEditorToggleButton *btnTextRedo;
+@property (nonatomic, strong) RichTextEditorToggleButton *btnSelectAll;
+
 @end
 
 @implementation RichTextEditorToolbar
@@ -189,6 +191,11 @@
 - (void)redoSelected:(UIButton *)sender
 {
 	[self.delegate richTextEditorToolbarDidSelectRedo];
+}
+
+-(void)selectAllSelected:(UIButton*)sender
+{
+    [self.delegate richTextEditorToolbarDidSelectSelectAll];
 }
 
 - (void)dismissKeyboard:(UIButton *)sender
@@ -454,22 +461,25 @@
 		UIView *separatorView = [self separatorView];
 		[self addView:separatorView afterView:lastAddedView withSpacing:YES];
 		lastAddedView = separatorView;
+        
+        [self addView:self.btnSelectAll afterView:lastAddedView withSpacing:YES];
+        lastAddedView = self.btnSelectAll;
 	}
 	
-    // I think he wanted TextAttachment here, not BulletList
-	if ((features & RichTextEditorTextAttachment) && SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0"))
-	{
-		[self addView:self.btnTextAttachment afterView:lastAddedView withSpacing:YES];
-		lastAddedView = self.btnTextAttachment;
-	}
+//    // I think he wanted TextAttachment here, not BulletList
+//	if ((features & RichTextEditorTextAttachment) && SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0"))
+//	{
+//		[self addView:self.btnTextAttachment afterView:lastAddedView withSpacing:YES];
+//		lastAddedView = self.btnTextAttachment;
+//	}
     
-	if ((features & RichTextEditorFeatureUndoRedo || features & RichTextEditorFeatureAll) && SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0"))
-	{
-		[self addView:self.btnTextUndo afterView:lastAddedView withSpacing:YES];
-		lastAddedView = self.btnTextUndo;
-		[self addView:self.btnTextRedo afterView:lastAddedView withSpacing:YES];
-		//lastAddedView = self.btnTextRedo;
-	}
+//	if ((features & RichTextEditorFeatureUndoRedo || features & RichTextEditorFeatureAll) && SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0"))
+//	{
+//		[self addView:self.btnTextUndo afterView:lastAddedView withSpacing:YES];
+//		lastAddedView = self.btnTextUndo;
+//		[self addView:self.btnTextRedo afterView:lastAddedView withSpacing:YES];
+//		//lastAddedView = self.btnTextRedo;
+//	}
 	
 	[self scrollRectToVisible:visibleRect animated:NO];
 }
@@ -540,6 +550,8 @@
                                       andSelector:@selector(undoSelected:)];
 	self.btnTextRedo = [self buttonWithImageNamed:@"redo.png"
                                       andSelector:@selector(redoSelected:)];
+
+    self.btnSelectAll = [self buttonWithImageNamed:@"unlink.png" andSelector:@selector(selectAllSelected:)];
     self.btnDismissKeyboard = [self buttonWithImageNamed:@"dismiss_keyboard.png" andSelector:@selector(dismissKeyboard:)];
 }
 
