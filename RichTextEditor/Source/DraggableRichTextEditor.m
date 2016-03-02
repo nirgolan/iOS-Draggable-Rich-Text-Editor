@@ -329,7 +329,7 @@ PinchAxis pinchGestureRecognizerAxis(UIPinchGestureRecognizer *r) {
     
     CGFloat length = sqrtf(translation.x * translation.x + translation.y * translation.y)  ;
     
-    CGFloat deleteThreshold = VELOCITY_FOR_DELETE / (1.5 * _viewScaling);
+    CGFloat deleteThreshold = VELOCITY_FOR_DELETE / 1.5 ;
     if (length > 30)
         NSLog(@"translate Velocity %.f , threshold %.2f", length , deleteThreshold );
     
@@ -365,9 +365,9 @@ PinchAxis pinchGestureRecognizerAxis(UIPinchGestureRecognizer *r) {
             if (self.isSinking) return;
             self.isSinking = YES;
             NSLog(@"calling throw animation with direction %.2f/%.2f" , self.lastTranslation.x , self.lastTranslation.y);
-#warning fix
-//            [self animateThrowAwayWithDirection: CGPointMake(self.lastTranslation.x > 0 ? 100 : -100, self.lastTranslation.y > 0 ? 100 : -100)];
-//            
+
+            [self animateThrowAwayAndRemoveFromSuperWithDirection:CGPointMake(self.lastTranslation.x > 0 ? 100 : -100, self.lastTranslation.y > 0 ? 100 : -100)];
+            
         }
         self.passedMaxVelocity = 0;
     }
