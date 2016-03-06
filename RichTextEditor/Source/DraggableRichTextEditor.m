@@ -110,18 +110,18 @@ PinchAxis pinchGestureRecognizerAxis(UIPinchGestureRecognizer *r) {
     self.tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapRecognized:)];
     self.tapRecognizer.numberOfTapsRequired = 1;
     
-    self.doubleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapRecognized:)];
+    self.doubleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapRecognized:)];
     self.doubleTapRecognizer.numberOfTapsRequired = 2;
     
     _doubleTapRecognizer.delegate = _tapRecognizer.delegate =  _rotateRecognizer.delegate = _panRecognizer.delegate = _pinchRecognizer.delegate = self;
     
-//    [self.tapRecognizer requireGestureRecognizerToFail:self.doubleTapRecognizer];
-    
+    [self.tapRecognizer requireGestureRecognizerToFail:self.doubleTapRecognizer];
+
     [self addGestureRecognizer:_panRecognizer];
     [self addGestureRecognizer:_rotateRecognizer];
     [self addGestureRecognizer:_pinchRecognizer];
     [self addGestureRecognizer:_tapRecognizer];
-//    [self addGestureRecognizer:_doubleTapRecognizer];
+    [self addGestureRecognizer:_doubleTapRecognizer];
     
 }
 
@@ -492,6 +492,22 @@ PinchAxis pinchGestureRecognizerAxis(UIPinchGestureRecognizer *r) {
     
 }
 
+- (void)doubleTapRecognized:(UITapGestureRecognizer*)recognizer
+{
+    [self gestureUpdated:recognizer];
+    
+    if (self.isSinking){
+        self.isSinking = NO;
+        return;
+    }
+    
+    
+    if (recognizer == self.doubleTapRecognizer) {
+        if ([self.draggableDelegate respondsToSelector:@selector(draggableRichTextDidDoubleTap:)])
+            [self.draggableDelegate draggableRichTextDidDoubleTap:self];
+    }
+}
+
 - (void)tapRecognized:(UITapGestureRecognizer*)recognizer
 {
     [self gestureUpdated:recognizer];
@@ -507,19 +523,15 @@ PinchAxis pinchGestureRecognizerAxis(UIPinchGestureRecognizer *r) {
             [self.draggableDelegate draggableRichTextDidTap:self];
     }
     
-    if (recognizer == self.doubleTapRecognizer) {
-        // double tap
-//        if ([_delegate respondsToSelector:@selector(responsiveImageViewDoubleTapped:)])
-//            [_delegate responsiveImageViewDoubleTapped:self];
-    }
 }
 
 #pragma mark - Gesture delegate
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
-    return !(gestureRecognizer.class == [UITapGestureRecognizer class] ||
-             otherGestureRecognizer.class == [UITapGestureRecognizer class]);
+    BOOL retVal = !(gestureRecognizer.class == [UITapGestureRecognizer class] ||
+                    otherGestureRecognizer.class == [UITapGestureRecognizer class]);
+    return retVal;
 }
 
 #pragma mark - touches - notify delegate

@@ -12,6 +12,7 @@
 @protocol DraggableRichTextDelegate <UITextViewDelegate>
 
 -(void)draggableRichTextDidTap:(DraggableRichTextEditor*)textLabel;
+-(void)draggableRichTextDidDoubleTap:(DraggableRichTextEditor*)textLabel;
 -(void)draggableRichTextDidStartDragging:(DraggableRichTextEditor *)textLabel start:(BOOL)start;
 @end
 
