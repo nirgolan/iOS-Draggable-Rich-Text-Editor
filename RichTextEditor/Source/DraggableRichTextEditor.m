@@ -42,7 +42,6 @@ PinchAxis pinchGestureRecognizerAxis(UIPinchGestureRecognizer *r) {
 
 @property (nonatomic) BOOL isDragging;
 @property (atomic) BOOL fixingRotation;
-@property (atomic) BOOL isSinking;
 @property (atomic) int sinkCounter;
 @property (atomic) int passedMaxVelocity;
 @property (atomic) CGPoint lastTranslation;
@@ -362,11 +361,13 @@ PinchAxis pinchGestureRecognizerAxis(UIPinchGestureRecognizer *r) {
         if (self.passedMaxVelocity > 0) {
             
             [recognizer setTranslation:CGPointMake(0, 0) inView:self];
-            if (self.isSinking) return;
-            self.isSinking = YES;
+            if (self.isRemoving) return;
+            self.isRemoving = YES;
             NSLog(@"calling throw animation with direction %.2f/%.2f" , self.lastTranslation.x , self.lastTranslation.y);
 
-            [self animateThrowAwayAndRemoveFromSuperWithDirection:CGPointMake(self.lastTranslation.x > 0 ? 100 : -100, self.lastTranslation.y > 0 ? 100 : -100)];
+            [self animateThrowAwayAndRemoveFromSuperWithDirection:CGPointMake(self.lastTranslation.x > 0 ? 100 : -100, self.lastTranslation.y > 0 ? 100 : -100) completion:^{
+        //        <#code#>
+            }];
             
         }
         self.passedMaxVelocity = 0;
@@ -496,8 +497,8 @@ PinchAxis pinchGestureRecognizerAxis(UIPinchGestureRecognizer *r) {
 {
     [self gestureUpdated:recognizer];
     
-    if (self.isSinking){
-        self.isSinking = NO;
+    if (self.isRemoving){
+        self.isRemoving = NO;
         return;
     }
     
@@ -512,8 +513,8 @@ PinchAxis pinchGestureRecognizerAxis(UIPinchGestureRecognizer *r) {
 {
     [self gestureUpdated:recognizer];
     
-    if (self.isSinking){
-        self.isSinking = NO;
+    if (self.isRemoving){
+        self.isRemoving = NO;
         return;
     }
     
@@ -540,9 +541,9 @@ PinchAxis pinchGestureRecognizerAxis(UIPinchGestureRecognizer *r) {
     [super touchesBegan:touches withEvent:event];
 //    [self setAndNotifyDragging:YES];
     
-    if (self.isSinking) {
+    if (self.isRemoving) {
         NSLog(@"sinking and touching");
-        self.isSinking = NO;
+        self.isRemoving = NO;
     }
     
 }

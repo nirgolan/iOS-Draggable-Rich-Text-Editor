@@ -21,6 +21,7 @@
 @property (nonatomic, weak) id<DraggableRichTextDelegate> draggableDelegate;
 @property BOOL wasEdited;
 @property BOOL editInPlace;
+@property (atomic) BOOL isRemoving;
 
 -(void)updateBoundsForContentSize;
 @end
