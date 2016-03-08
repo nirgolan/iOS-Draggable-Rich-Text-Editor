@@ -402,7 +402,7 @@
 		[self addView:separatorView afterView:lastAddedView withSpacing:YES];
 		lastAddedView = separatorView;
 	}
-	
+/*
 	// Paragraph indentation
 	if (features & RichTextEditorFeatureParagraphIndentation || features & RichTextEditorFeatureAll)
 	{
@@ -425,7 +425,7 @@
 		[self addView:separatorView afterView:lastAddedView withSpacing:YES];
 		lastAddedView = separatorView;
 	}
-	
+*/
 	// Background color
 	if (features & RichTextEditorFeatureTextBackgroundColor || features & RichTextEditorFeatureAll)
 	{
@@ -463,7 +463,7 @@
 		lastAddedView = separatorView;
         
         [self addView:self.btnSelectAll afterView:lastAddedView withSpacing:YES];
-        lastAddedView = self.btnSelectAll;
+//        lastAddedView = self.btnSelectAll;
 	}
 	
 //    // I think he wanted TextAttachment here, not BulletList
@@ -534,7 +534,7 @@
 	
 	self.btnBulletList = [self buttonWithImageNamed:@"bullist.png"
 										 andSelector:@selector(bulletListSelected:)];
-	
+/*
 	self.btnParagraphIndent = [self buttonWithImageNamed:@"indent.png"
 											 andSelector:@selector(paragraphIndentSelected:)];
 	
@@ -543,15 +543,16 @@
 	
 	self.btnParagraphFirstLineHeadIndent = [self buttonWithImageNamed:@"firstLineIndent.png"
 														  andSelector:@selector(paragraphHeadIndentOutdentSelected:)];
-	
+
 	self.btnTextAttachment = [self buttonWithImageNamed:@"image.png"
                                             andSelector:@selector(textAttachmentSelected:)];
-	self.btnTextUndo = [self buttonWithImageNamed:@"undo.png"
+*/
+    self.btnTextUndo = [self buttonWithImageNamed:@"undo"
                                       andSelector:@selector(undoSelected:)];
-	self.btnTextRedo = [self buttonWithImageNamed:@"redo.png"
+	self.btnTextRedo = [self buttonWithImageNamed:@"redo"
                                       andSelector:@selector(redoSelected:)];
 
-    self.btnSelectAll = [self buttonWithImageNamed:@"unlink.png" andSelector:@selector(selectAllSelected:)];
+    self.btnSelectAll = [self buttonWithImageNamed:@"select-all" andSelector:@selector(selectAllSelected:)];
     self.btnDismissKeyboard = [self buttonWithImageNamed:@"dismiss_keyboard.png" andSelector:@selector(dismissKeyboard:)];
 }
 
@@ -666,7 +667,7 @@
 
 #pragma mark - RichTextEditorColorPickerViewControllerDelegate & RichTextEditorColorPickerViewControllerDataSource Methods -
 
-- (void)richTextEditorColorPickerViewControllerDidSelectColor:(UIColor *)color withAction:(RichTextEditorColorPickerAction)action
+- (void)richTextEditorColorPickerViewControllerDidSelectColor:(UIColor *)color withAction:(RichTextEditorColorPickerAction)action shouldDismiss:(BOOL)shouldDismiss
 {
 	if (action == RichTextEditorColorPickerActionTextBackgroundColor)
 	{
@@ -676,8 +677,10 @@
 	{
 		[self.delegate richTextEditorToolbarDidSelectTextForegroundColor:color];
 	}
-	
-	[self dismissViewController];
+    if(shouldDismiss)
+    {
+        [self dismissViewController];
+    }
 }
 
 - (void)richTextEditorColorPickerViewControllerDidSelectClose
@@ -718,7 +721,7 @@
 - (void)richTextEditorFontPickerViewControllerDidSelectFontWithName:(NSString *)fontName
 {
 	[self.delegate richTextEditorToolbarDidSelectFontWithName:fontName];
-	[self dismissViewController];
+//	[self dismissViewController];
 }
 
 - (void)richTextEditorFontPickerViewControllerDidSelectClose

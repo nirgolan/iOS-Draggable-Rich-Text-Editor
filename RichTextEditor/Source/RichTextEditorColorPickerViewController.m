@@ -36,7 +36,7 @@
     [super viewDidLoad];
 	
 	self.view.backgroundColor = [UIColor whiteColor];
-	
+    /*
 	UIButton *btnDone = [[UIButton alloc] initWithFrame:CGRectMake(5, 5, 60, 30)];
 	[btnDone addTarget:self action:@selector(doneSelected:) forControlEvents:UIControlEventTouchUpInside];
 	[btnDone.titleLabel setFont:[UIFont boldSystemFontOfSize:12]];
@@ -57,9 +57,12 @@
 	self.selectedColorView.layer.borderWidth = 1;
 	self.selectedColorView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 	[self.view addSubview:self.selectedColorView];
-	
-	self.colorsImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"colors.jpg"]];;
-	self.colorsImageView.frame = CGRectMake(2, 40, self.view.frame.size.width-4, self.view.frame.size.height - 40 - 2);
+	*/
+    
+	self.colorsImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"colors"]];
+//    CGRect frame = CGRectMake(2, 2, self.view.frame.size.width-4, self.view.frame.size.height - 2);
+//    frame = CGRectInset(frame, frame.size.width * 1.25, frame.size.height * 1.25);
+    self.colorsImageView.frame = self.view.frame;
 	self.colorsImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	self.colorsImageView.layer.borderColor = [UIColor lightGrayColor].CGColor;
 	self.colorsImageView.layer.borderWidth = 0;
@@ -104,15 +107,7 @@
 		
 		self.colorsImageView.frame = CGRectMake(2, toolbarHeight+2, self.view.frame.size.width-4, self.view.frame.size.height - (toolbarHeight+4));
 	}
-	
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
-    
-    self.preferredContentSize = CGSizeMake(300, 240);
-#else
-    
-	self.contentSizeForViewInPopover = CGSizeMake(300, 240);
-#endif
-
+    self.preferredContentSize = CGSizeMake(390, 312);
 }
 
 #pragma mark - Private Methods -
@@ -129,7 +124,7 @@
 
 - (IBAction)doneSelected:(id)sender
 {
-	[self.delegate richTextEditorColorPickerViewControllerDidSelectColor:self.selectedColorView.backgroundColor withAction:self.action];
+	[self.delegate richTextEditorColorPickerViewControllerDidSelectColor:self.selectedColorView.backgroundColor withAction:self.action shouldDismiss:YES];
 }
 
 - (IBAction)closeSelected:(id)sender
@@ -139,7 +134,7 @@
 
 - (IBAction)clearSelected:(id)sender
 {
-	[self.delegate richTextEditorColorPickerViewControllerDidSelectColor:nil withAction:self.action];
+    [self.delegate richTextEditorColorPickerViewControllerDidSelectColor:nil withAction:self.action shouldDismiss:YES];
 }
 
 #pragma mark - Touch Detection -
@@ -148,12 +143,16 @@
 {
 	CGPoint locationPoint = [[touches anyObject] locationInView:self.colorsImageView];
 	[self populateColorsForPoint:locationPoint];
+    [self.delegate richTextEditorColorPickerViewControllerDidSelectColor:self.selectedColorView.backgroundColor withAction:self.action shouldDismiss:NO];
+
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	CGPoint locationPoint = [[touches anyObject] locationInView:self.colorsImageView];
 	[self populateColorsForPoint:locationPoint];
+    [self.delegate richTextEditorColorPickerViewControllerDidSelectColor:self.selectedColorView.backgroundColor withAction:self.action shouldDismiss:NO];
+
 }
 
 @end

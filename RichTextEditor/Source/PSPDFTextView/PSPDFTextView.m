@@ -72,7 +72,9 @@
 
 - (void)setAttributedText:(NSAttributedString *)attributedText {
     _settingText = YES;
+    NSRange prev = super.selectedRange;
     [super setAttributedText:attributedText];
+    [super setSelectedRange:prev];
     _settingText = NO;
 }
 

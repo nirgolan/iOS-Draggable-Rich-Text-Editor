@@ -14,7 +14,7 @@ typedef enum {
 }RichTextEditorColorPickerAction;
 
 @protocol RichTextEditorColorPickerViewControllerDelegate <NSObject>
-- (void)richTextEditorColorPickerViewControllerDidSelectColor:(UIColor *)color withAction:(RichTextEditorColorPickerAction)action;
+- (void)richTextEditorColorPickerViewControllerDidSelectColor:(UIColor *)color withAction:(RichTextEditorColorPickerAction)action shouldDismiss:(BOOL)shouldDismiss;
 - (void)richTextEditorColorPickerViewControllerDidSelectClose;
 @end
 
