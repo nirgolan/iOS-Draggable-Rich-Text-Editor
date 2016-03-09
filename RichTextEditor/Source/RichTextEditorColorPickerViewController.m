@@ -50,14 +50,14 @@
 	[btnClear setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
 	[btnClear setTitle:@"Clear" forState:UIControlStateNormal];
 	[self.view addSubview:btnClear];
-	
+	*/
 	self.selectedColorView = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 35 - 5, 5, 35, 30)];
 	self.selectedColorView.backgroundColor = [UIColor blackColor];
 	self.selectedColorView.layer.borderColor = [UIColor lightGrayColor].CGColor;
 	self.selectedColorView.layer.borderWidth = 1;
 	self.selectedColorView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 	[self.view addSubview:self.selectedColorView];
-	*/
+	
     
 	self.colorsImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"colors"]];
 //    CGRect frame = CGRectMake(2, 2, self.view.frame.size.width-4, self.view.frame.size.height - 2);
