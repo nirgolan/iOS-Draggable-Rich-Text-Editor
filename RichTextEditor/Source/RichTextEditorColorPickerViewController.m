@@ -60,9 +60,8 @@
 	
     
 	self.colorsImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"colors"]];
-//    CGRect frame = CGRectMake(2, 2, self.view.frame.size.width-4, self.view.frame.size.height - 2);
-//    frame = CGRectInset(frame, frame.size.width * 1.25, frame.size.height * 1.25);
-    self.colorsImageView.frame = self.view.frame;
+    self.colorsImageView.frame = CGRectMake(0, 40, self.view.frame.size.width, self.view.frame.size.height - 40 );
+    //    frame = CGRectInset(frame, frame.size.width * 1.25, frame.size.height * 1.25);
 	self.colorsImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	self.colorsImageView.layer.borderColor = [UIColor lightGrayColor].CGColor;
 	self.colorsImageView.layer.borderWidth = 0;
