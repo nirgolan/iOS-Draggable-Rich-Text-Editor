@@ -652,7 +652,10 @@
 
 - (void)richTextEditorToolbarDidSelectSelectAll
 {
-    self.selectedRange = NSMakeRange(0, self.attributedText.length);
+    if(self.attributedText.length-1 > 0 )
+    {
+        self.selectedRange = NSMakeRange(0, self.attributedText.length-1);
+    }
 }
 
 - (UIViewController <RichTextEditorColorPicker> *)colorPickerForRichTextEditorToolbarWithAction:(RichTextEditorColorPickerAction)action
