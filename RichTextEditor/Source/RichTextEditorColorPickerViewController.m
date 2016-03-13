@@ -43,14 +43,14 @@
 	[btnDone setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
 	[btnDone setTitle:@"Select" forState:UIControlStateNormal];
 	[self.view addSubview:btnDone];
+     */
 
-	UIButton *btnClear = [[UIButton alloc] initWithFrame:CGRectMake(65, 5, 60, 30)];
+	UIButton *btnClear = [[UIButton alloc] initWithFrame:CGRectMake(5, 5, 60, 30)];
 	[btnClear addTarget:self action:@selector(clearSelected:) forControlEvents:UIControlEventTouchUpInside];
 	[btnClear.titleLabel setFont:[UIFont boldSystemFontOfSize:12]];
 	[btnClear setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
 	[btnClear setTitle:@"Clear" forState:UIControlStateNormal];
 	[self.view addSubview:btnClear];
-	*/
 	self.selectedColorView = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 35 - 5, 5, 35, 30)];
 	self.selectedColorView.backgroundColor = [UIColor blackColor];
 	self.selectedColorView.layer.borderColor = [UIColor lightGrayColor].CGColor;

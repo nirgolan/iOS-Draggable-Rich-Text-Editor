@@ -652,9 +652,9 @@
 
 - (void)richTextEditorToolbarDidSelectSelectAll
 {
-    if(self.attributedText.length-1 > 0 )
+    if(self.attributedText.length> 0 )
     {
-        self.selectedRange = NSMakeRange(0, self.attributedText.length-1);
+        self.selectedRange = NSMakeRange(0, self.attributedText.length);
     }
 }
 
